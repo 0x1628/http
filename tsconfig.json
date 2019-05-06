@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "rootDir": "src",
+    "outDir": "lib",
+    "declaration": true,
+    "lib": ["esnext", "dom"],
+    "target": "es5"
+  }
+}
