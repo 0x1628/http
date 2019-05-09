@@ -4,7 +4,13 @@
     "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
+    "moduleResolution": "node",
     "lib": ["esnext", "dom"],
     "target": "es5"
-  }
+  },
+  "exclude": [
+    "lib",
+    "node_modules",
+    "**/__tests__/*"
+  ]
 }

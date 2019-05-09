@@ -1,5 +1,6 @@
+import {fetch as whatwgFetch} from 'whatwg-fetch'
 import {ConfigWildcard, Res} from './base'
-import {omit} from './utils'
+import {omit, mapToObject} from './utils'
 declare const wx: any
 
 function makeFetchOptionFromConfig(config: ConfigWildcard) {
@@ -7,9 +8,11 @@ function makeFetchOptionFromConfig(config: ConfigWildcard) {
 
   if (data &&
     typeof data !== 'string' &&
-    !(data instanceof FormData) &&
-    !(data instanceof File)
-  ) {
+    /* tslint:disable */
+    (typeof FormData === 'undefined' || !(data instanceof FormData)) &&
+    (typeof File === 'undefined' || (data instanceof File))
+    /* tslint:enable */
+    ) {
     data = JSON.stringify(data)
     headers = {
       ...headers,
@@ -83,8 +86,10 @@ if (typeof wx !== 'undefined') {
     })
   }
 } else {
-  // tslint:disable-next-line
-  const ifetch: typeof fetch = require('isomorphic-fetch')
+  const ifetch: typeof fetch =
+    typeof (global as any).fetch !== 'undefined' ? (global as any).fetch
+      // tslint:disable-next-line
+      : (typeof window !== 'undefined' ? whatwgFetch : require('node-fetch'))
   agent = (config: ConfigWildcard) => {
     return ifetch(config.url, makeFetchOptionFromConfig(config))
       .then(r => {
@@ -98,7 +103,7 @@ if (typeof wx !== 'undefined') {
           const res = {
             data,
             status: r.status,
-            headers: r.headers,
+            headers: mapToObject(r.headers),
           }
           return r.ok ? Promise.resolve(res) : Promise.reject(res)
         })
@@ -106,7 +111,7 @@ if (typeof wx !== 'undefined') {
         return Promise.reject({
           data: e.data || e,
           status: e.status || 500,
-          headers: e.headers || {},
+          headers: e.headers ? mapToObject(e.headers) : {},
         })
       })
   }

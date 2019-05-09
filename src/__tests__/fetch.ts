@@ -1,8 +1,8 @@
 import {http} from '../index'
-import * as fetch from 'isomorphic-fetch'
+import fetch from 'node-fetch'
 import {string2any} from '../base'
 
-jest.mock('isomorphic-fetch')
+jest.mock('node-fetch')
 const mockedFetch = fetch as any
 
 const baseResponse = {

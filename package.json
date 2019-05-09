@@ -2,9 +2,16 @@
   "name": "@fragment0/http",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/http.node.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf lib && tsc -p .",
+    "build-umd": "tsc -p . --module es6 && OUTPUT_TYPE=umd rollup -c",
+    "build-wx": "tsc -p . --module es6 && OUTPUT_TYPE=wx rollup -c",
+    "build-native": "tsc -p . --module es6 && OUTPUT_TYPE=native rollup -c",
+    "build-node": "rm -rf lib && tsc -p . --target es3 && OUTPUT_TYPE=node rollup -c",
+    "build-all": "rm -rf lib dist && tsc -p . --module es6 && OUTPUT_TYPE=umd rollup -c && OUTPUT_TYPE=wx rollup -c && OUTPUT_TYPE=native rollup -c && npm run build-node",
+    "prepublish": "npm run test && npm run build-all",
+    "test": "tslint -p . && jest"
   },
   "repository": {
     "type": "git",
@@ -16,17 +23,28 @@
     "url": "https://github.com/fragment0/http/issues"
   },
   "homepage": "https://github.com/fragment0/http#readme",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@fragment0/tslint-config": "^0.1.7",
-    "@types/isomorphic-fetch": "^0.0.35",
     "@types/jest": "^24.0.12",
     "@types/node": "^12.0.0",
     "jest": "^24.8.0",
+    "rollup": "^1.11.3",
+    "rollup-plugin-alias": "^1.5.1",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-uglify": "^6.0.2",
     "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1"
+    "@types/node-fetch": "^2.3.3",
+    "node-fetch": "^2.5.0",
+    "whatwg-fetch": "^3.0.0"
   }
 }

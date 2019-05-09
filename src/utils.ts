@@ -14,3 +14,12 @@ export function queryToString(obj: string2any): string {
     return `${target}&${next}=${obj[next] || ''}`
   }, '').slice(1)
 }
+
+export function mapToObject(m: Headers | Map<any, any>): string2any {
+  if (!m.forEach) return m
+  const result: string2any = {}
+  m.forEach((v: any, k: any) => {
+    result[k] = v
+  })
+  return result
+}
