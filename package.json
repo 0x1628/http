@@ -10,7 +10,7 @@
     "build-native": "tsc -p . --module es6 && OUTPUT_TYPE=native rollup -c",
     "build-node": "rm -rf lib && tsc -p . --target es3 && OUTPUT_TYPE=node rollup -c",
     "build-all": "rm -rf lib dist && tsc -p . --module es6 && OUTPUT_TYPE=umd rollup -c && OUTPUT_TYPE=wx rollup -c && OUTPUT_TYPE=native rollup -c && npm run build-node",
-    "prepublish": "npm run test && npm run build-all",
+    "prepublishOnly": "npm run test && npm run build-all",
     "test": "tslint -p . && jest"
   },
   "repository": {

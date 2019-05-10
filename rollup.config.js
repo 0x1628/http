@@ -30,6 +30,7 @@ export default [{
     esModule: false,
   },
   plugins: [
+    // typescript(),
     // json(),
     replace(replacement),
     alias({
