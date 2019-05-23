@@ -57,17 +57,22 @@ if (typeof wx !== 'undefined') {
             contentType: (r.header || {})['content-type'],
           })
           let data = r.data
+          const res: Res = {
+            data: {},
+            status: r.statusCode,
+            headers: r.header,
+          }
           if (typeof data === 'string' && isResponseJson) {
             try {
               data = JSON.parse(data)
+              res.data = data
             } catch (e) {
-              //
+              res.rawData = data
             }
-          }
-          const res = {
-            data,
-            status: r.statusCode,
-            headers: r.header,
+          } else if (typeof data === 'object') {
+            res.data = data
+          } else {
+            res.rawData = data
           }
           if (r.statusCode >= 300) {
             reject(res)
@@ -100,11 +105,16 @@ if (typeof wx !== 'undefined') {
         })
         const dataPromise = isResponseJson ? r.json() : r.text()
         return dataPromise.then(data => {
-          const res = {
-            data,
+          const isStringData = typeof data === 'string'
+          const res: Res = {
+            data: isStringData ? {} : data,
             status: r.status,
             headers: mapToObject(r.headers),
           }
+          if (isStringData) {
+            res.rawData = data
+          }
+
           return r.ok ? Promise.resolve(res) : Promise.reject(res)
         })
       }).catch(e => {

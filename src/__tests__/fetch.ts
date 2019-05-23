@@ -21,7 +21,7 @@ const baseResponse = {
 }
 
 test('test basic function', async () => {
-  expect.assertions(2)
+  expect.assertions(3)
 
   mockedFetch.mockResolvedValue({
     ...baseResponse,
@@ -29,7 +29,8 @@ test('test basic function', async () => {
   try {
     const res = await http.get('/test')
     expect(res.status).toBe(200)
-    expect(res.data).toBe('{}')
+    expect(Object.keys(res.data).length).toBe(0)
+    expect(res.rawData).toBe('{}')
   } catch (e) {
     throw e
   }

@@ -29,7 +29,8 @@ export type ConfigWildcard = Partial<ConfigBase> & {
 }
 
 export type Res = {
-  data: string2any | string,
+  data: string2any,
+  rawData?: string,
   status: number,
   headers: string2any,
 }
