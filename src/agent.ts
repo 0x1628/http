@@ -29,10 +29,11 @@ function makeFetchOptionFromConfig(config: ConfigWildcard) {
   }
 }
 
-function isJSON(res: {status: number, contentLength: string, contentType: string}): boolean {
+function isJSON(res: {status: number, contentLength?: string, contentType: string}): boolean {
   if (res.status === 204) return false
 
-  if (Number(res.contentLength) === 0) return false
+  if (typeof res.contentLength !== 'undefined'
+    && res.contentLength.length && Number(res.contentLength) === 0) return false
 
   const type = res.contentType
   return type ? type.includes('application/json') : false

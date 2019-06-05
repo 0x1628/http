@@ -1,16 +1,18 @@
 {
   "name": "@fragment0/http",
-  "version": "0.1.1",
+  "version": "0.1.6",
   "description": "",
   "main": "dist/http.node.js",
+  "browser": "dist/http.native.js",
   "scripts": {
     "build": "rm -rf lib && tsc -p .",
     "build-umd": "tsc -p . --module es6 && OUTPUT_TYPE=umd rollup -c",
     "build-wx": "tsc -p . --module es6 && OUTPUT_TYPE=wx rollup -c",
     "build-native": "tsc -p . --module es6 && OUTPUT_TYPE=native rollup -c",
     "build-node": "rm -rf lib && tsc -p . --target es3 && OUTPUT_TYPE=node rollup -c",
-    "build-all": "rm -rf lib dist && tsc -p . --module es6 && OUTPUT_TYPE=umd rollup -c && OUTPUT_TYPE=wx rollup -c && OUTPUT_TYPE=native rollup -c && npm run build-node",
+    "build-all": "rm -rf lib dist && tsc -p . --module es6 && OUTPUT_TYPE=umd rollup -c && OUTPUT_TYPE=wx rollup -c && OUTPUT_TYPE=native rollup -c && npm run build-node && npm run cpdef",
     "prepublishOnly": "npm run test && npm run build-all",
+    "cpdef": "cp lib/*.d.ts dist; cd dist; cp index.d.ts http.native.d.ts; cp index.d.ts http.node.d.ts; cp index.d.ts http.umd.d.ts",
     "test": "tslint -p . && jest"
   },
   "repository": {
