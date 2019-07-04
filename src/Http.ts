@@ -23,6 +23,11 @@ export class Http {
 
   request(config: ConfigWildcard): Promise<Res> {
     const url = this._makeURL(config)
+    config = {
+      ...this.defaults,
+      ...config,
+    }
+
     const transformedConfig = this.defaults.transformRequest!.reduce((conf, next) => {
       return next(conf)
     }, config as Config)
