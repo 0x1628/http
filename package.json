@@ -1,6 +1,6 @@
 {
   "name": "@fragment0/http",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "",
   "main": "dist/http.node.js",
   "browser": "dist/http.native.js",

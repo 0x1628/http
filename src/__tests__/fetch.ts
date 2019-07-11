@@ -94,6 +94,29 @@ test('test post body', () => {
   function getPostArg() {
     return mockedFetch.mock.calls[mockedFetch.mock.calls.length - 1][1]
   }
-  expect(JSON.parse(getPostArg().data).test).toBe(1)
+
+  expect(JSON.parse(getPostArg().body).test).toBe(1)
   expect(getPostArg().headers['content-type']).toBe('application/json')
+})
+
+test('test post body in browser', () => {
+  (global as any).FormData = function() {/**/};
+  (global as any).File = function() {/**/}
+  mockedFetch.mockResolvedValue({
+    ...baseResponse,
+  })
+  http.post('/test', {
+    test: 1,
+  })
+
+  function getPostArg() {
+    return mockedFetch.mock.calls[mockedFetch.mock.calls.length - 1][1]
+  }
+
+  expect(typeof getPostArg().body).toBe('string')
+  expect(JSON.parse(getPostArg().body).test).toBe(1)
+  expect(getPostArg().headers['content-type']).toBe('application/json')
+
+  delete (global as any).FormData
+  delete (global as any).File
 })
