@@ -37,7 +37,9 @@ test('test basic function', async () => {
 })
 
 test('test json format', async () => {
-  expect.assertions(1)
+  expect.assertions(2)
+
+  type Data = {test: number}
 
   mockedFetch.mockResolvedValue({
     ...baseResponse,
@@ -48,8 +50,23 @@ test('test json format', async () => {
     data: {test: 1},
   })
 
-  const res = await http.get('/test')
-  expect((res.data as string2any).test).toBe(1)
+  const res = await http.get<Data>('/test')
+  expect(res.data.test).toBe(1)
+
+  type DataArr = string[]
+
+  mockedFetch.mockResolvedValue({
+    ...baseResponse,
+    headers: new Map([
+      ['content-length', '10'],
+      ['content-type', 'application/json'],
+    ]),
+    data: ['123'],
+  })
+
+  const resArr = await http.get<DataArr>('/test')
+  const result = resArr.data[0]
+  expect(result).toBe('123')
 })
 
 test('test failed', async () => {

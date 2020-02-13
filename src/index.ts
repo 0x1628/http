@@ -1,7 +1,7 @@
 import {Http} from './Http'
-import {Config, ConfigWildcard} from './base'
+import {Config as ConfigOrigin, ConfigWildcard} from './base'
 
-export function create(config: Config) {
+export function create(config: ConfigOrigin) {
   return new Http(config)
 }
 

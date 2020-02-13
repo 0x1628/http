@@ -1,5 +1,5 @@
 import {fetch as whatwgFetch} from 'whatwg-fetch'
-import {ConfigWildcard, Res} from './base'
+import {ConfigWildcard, Res, string2any} from './base'
 import {omit, mapToObject} from './utils'
 declare const wx: any
 
@@ -39,7 +39,7 @@ function isJSON(res: {status: number, contentLength?: string, contentType: strin
   return type ? type.includes('application/json') : false
 }
 
-type Agent = (config: ConfigWildcard) => Promise<Res>
+type Agent = <T = string2any>(config: ConfigWildcard) => Promise<Res<T>>
 
 let agent: Agent
 
@@ -58,7 +58,7 @@ if (typeof wx !== 'undefined') {
             contentType: (r.header || {})['content-type'],
           })
           let data = r.data
-          const res: Res = {
+          const res: Res<any> = {
             data: {},
             status: r.statusCode,
             headers: r.header,
@@ -107,7 +107,7 @@ if (typeof wx !== 'undefined') {
         const dataPromise = isResponseJson ? r.json() : r.text()
         return dataPromise.then(data => {
           const isStringData = typeof data === 'string'
-          const res: Res = {
+          const res: Res<any> = {
             data: isStringData ? {} : data,
             status: r.status,
             headers: mapToObject(r.headers),

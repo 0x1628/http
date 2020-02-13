@@ -1,4 +1,4 @@
-import {Res, Config, Data, ConfigWildcard, Method} from './base'
+import {Res, Config, Data, ConfigWildcard, Method, string2any} from './base'
 import agent from './agent'
 import {queryToString} from './utils'
 
@@ -21,7 +21,7 @@ export class Http {
     }
   }
 
-  request(config: ConfigWildcard): Promise<Res> {
+  request<T = string2any>(config: ConfigWildcard): Promise<Res<T>> {
     const url = this._makeURL(config)
     config = {
       ...this.defaults,
@@ -31,12 +31,12 @@ export class Http {
     const transformedConfig = this.defaults.transformRequest!.reduce((conf, next) => {
       return next(conf)
     }, config as Config)
-    return agent({
+    return agent<T>({
       ...transformedConfig,
       method: config.method,
       url,
     }).then(res => {
-      return this.defaults.transformResponse!.reduce((result, next) => {
+      return this.defaults.transformResponse!.reduce((_, next) => {
         return next(res)
       }, res)
     })
@@ -60,16 +60,16 @@ export class Http {
   }
 
   // must declare explicit for type checking
-  private _noDataMethod(method: Method, url: string, config?: Config) {
-    return this.request({
+  private _noDataMethod<T>(method: Method, url: string, config?: Config) {
+    return this.request<T>({
       ...config,
       method,
       url,
     })
   }
 
-  private _dataMethod(method: Method, url: string, data?: Data, config?: Config) {
-    return this.request({
+  private _dataMethod<T>(method: Method, url: string, data?: Data, config?: Config) {
+    return this.request<T>({
       ...config,
       method,
       url,
@@ -77,31 +77,31 @@ export class Http {
     })
   }
 
-  get(url: string, config?: Config) {
-    return this._noDataMethod('get', url, config)
+  get<T = string2any>(url: string, config?: Config) {
+    return this._noDataMethod<T>('get', url, config)
   }
 
-  options(url: string, config?: Config) {
+  options<T = string2any>(url: string, config?: Config) {
     return this._noDataMethod('options', url, config)
   }
 
-  delete(url: string, config?: Config) {
+  delete<T = string2any>(url: string, config?: Config) {
     return this._noDataMethod('delete', url, config)
   }
 
-  head(url: string, config?: Config) {
+  head<T = string2any>(url: string, config?: Config) {
     return this._noDataMethod('head', url, config)
   }
 
-  post(url: string, data?: Data, config?: Config) {
+  post<T = string2any>(url: string, data?: Data, config?: Config) {
     return this._dataMethod('post', url, data, config)
   }
 
-  patch(url: string, data?: Data, config?: Config) {
+  patch<T = string2any>(url: string, data?: Data, config?: Config) {
     return this._dataMethod('patch', url, data, config)
   }
 
-  put(url: string, data?: Data, config?: Config) {
+  put<T = string2any>(url: string, data?: Data, config?: Config) {
     return this._dataMethod('put', url, data, config)
   }
 }

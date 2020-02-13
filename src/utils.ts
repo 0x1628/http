@@ -6,7 +6,8 @@ export function omit<T extends string2any>(obj: T, ...keys: string[]): Partial<T
       target[next] = obj[next]
     }
     return target
-  }, {} as T)
+  // https://github.com/microsoft/TypeScript/issues/31661
+  }, {} as string2any) as Partial<T>
 }
 
 export function queryToString(obj: string2any): string {

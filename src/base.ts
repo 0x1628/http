@@ -19,7 +19,7 @@ interface ConfigBase {
   withCredentials: boolean,
   baseURL: string,
   transformRequest: ((config: Config) => Config)[],
-  transformResponse: ((res: Res) => Res)[],
+  transformResponse: (<T>(res: Res<T>) => Res<T>)[],
 }
 
 export type Config = Partial<ConfigBase>
@@ -28,8 +28,8 @@ export type ConfigWildcard = Partial<ConfigBase> & {
   url: string,
 }
 
-export type Res = {
-  data: string2any,
+export type Res<T = string2any> = {
+  data: T,
   rawData?: string,
   status: number,
   headers: string2any,
