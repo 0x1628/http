@@ -22,7 +22,6 @@ export class Http {
   }
 
   request<T = string2any>(config: ConfigWildcard): Promise<Res<T>> {
-    const url = this._makeURL(config)
     config = {
       ...this.defaults,
       ...config,
@@ -30,11 +29,11 @@ export class Http {
 
     const transformedConfig = this.defaults.transformRequest!.reduce((conf, next) => {
       return next(conf)
-    }, config as Config)
+    }, config)
     return agent<T>({
       ...transformedConfig,
       method: config.method,
-      url,
+      url: this._makeURL(config),
     }).then(res => {
       return this.defaults.transformResponse!.reduce((_, next) => {
         return next(res)

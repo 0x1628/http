@@ -18,7 +18,7 @@ interface ConfigBase {
   timeout: number,
   withCredentials: boolean,
   baseURL: string,
-  transformRequest: ((config: Config) => Config)[],
+  transformRequest: ((config: ConfigWildcard) => ConfigWildcard)[],
   transformResponse: (<T>(res: Res<T>) => Res<T>)[],
 }
 
