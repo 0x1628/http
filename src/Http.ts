@@ -81,26 +81,26 @@ export class Http {
   }
 
   options<T = string2any>(url: string, config?: Config) {
-    return this._noDataMethod('options', url, config)
+    return this._noDataMethod<T>('options', url, config)
   }
 
   delete<T = string2any>(url: string, config?: Config) {
-    return this._noDataMethod('delete', url, config)
+    return this._noDataMethod<T>('delete', url, config)
   }
 
   head<T = string2any>(url: string, config?: Config) {
-    return this._noDataMethod('head', url, config)
+    return this._noDataMethod<T>('head', url, config)
   }
 
   post<T = string2any>(url: string, data?: Data, config?: Config) {
-    return this._dataMethod('post', url, data, config)
+    return this._dataMethod<T>('post', url, data, config)
   }
 
   patch<T = string2any>(url: string, data?: Data, config?: Config) {
-    return this._dataMethod('patch', url, data, config)
+    return this._dataMethod<T>('patch', url, data, config)
   }
 
   put<T = string2any>(url: string, data?: Data, config?: Config) {
-    return this._dataMethod('put', url, data, config)
+    return this._dataMethod<T>('put', url, data, config)
   }
 }
