@@ -34,7 +34,9 @@ export default [{
     // json(),
     replace(replacement),
     alias({
-      ...outputType === 'umd' ? {} : {'whatwg-fetch': './fake'}
+      entries: {
+        ...outputType === 'umd' ? {} : {'whatwg-fetch': './fake'}
+      },
     }),
     nodeResolve(),
     commonjs({
