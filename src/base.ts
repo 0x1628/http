@@ -20,6 +20,7 @@ interface ConfigBase {
   baseURL: string,
   transformRequest: ((config: ConfigWildcard) => ConfigWildcard)[],
   transformResponse: (<T>(res: Res<T>) => Res<T>)[],
+  errorHandler?(res: Res<any>): void,
 }
 
 export type Config = Partial<ConfigBase>
