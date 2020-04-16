@@ -38,6 +38,11 @@ export class Http {
       return this.defaults.transformResponse!.reduce((_, next) => {
         return next(res)
       }, res)
+    }, e => {
+      if (config.errorHandler) {
+        config.errorHandler(e)
+      }
+      throw e
     })
   }
 

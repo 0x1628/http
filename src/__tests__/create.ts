@@ -40,3 +40,24 @@ test('create basic', async () => {
   expect(params[0]).toBe('http://www.baidu.com/test')
   expect(params[1].headers.token).toBe('hi')
 })
+
+test('test errorhandler', async () => {
+  expect.assertions(2)
+  mockedFetch.mockResolvedValue({
+    ...baseResponse,
+    status: 404,
+    ok: false,
+  })
+
+  const http = create({
+    errorHandler(e) {
+      expect(e.status).toBe(404)
+    },
+  })
+
+  try {
+    await http.get('/test')
+  } catch (e) {
+    expect(e.status).toBe(404)
+  }
+})
