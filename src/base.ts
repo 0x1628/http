@@ -9,6 +9,9 @@ export const methods = ['get', 'post', 'patch', 'put', 'delete',
 
 export type Method = typeof methods[number]
 
+export type TransformRequestFunc = ((config: ConfigWildcard) => ConfigWildcard)
+export type TransformResponseFunc = (<T>(res: Res<T>) => Res<T>)
+
 interface ConfigBase {
   headers: {
     [key: string]: string,
@@ -18,8 +21,8 @@ interface ConfigBase {
   timeout: number,
   withCredentials: boolean,
   baseURL: string,
-  transformRequest: ((config: ConfigWildcard) => ConfigWildcard)[],
-  transformResponse: (<T>(res: Res<T>) => Res<T>)[],
+  transformRequest: TransformRequestFunc[],
+  transformResponse: TransformResponseFunc[],
   errorHandler?(res: Res<any>): void,
 }
 
