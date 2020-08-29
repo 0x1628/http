@@ -10,7 +10,8 @@ function makeFetchOptionFromConfig(config: ConfigWildcard) {
     typeof data !== 'string' &&
     /* tslint:disable */
     (typeof FormData === 'undefined' || !(data instanceof FormData)) &&
-    (typeof File === 'undefined' || !(data instanceof File))
+    (typeof File === 'undefined' || !(data instanceof File)) &&
+    !Object.keys(headers).find(k => k.toLocaleLowerCase() === 'content-type')
     /* tslint:enable */
   ) {
     data = JSON.stringify(data)
@@ -25,7 +26,7 @@ function makeFetchOptionFromConfig(config: ConfigWildcard) {
     method: (config.method || 'get').toUpperCase(),
     credentials: (config.withCredentials ? 'include' : 'omit') as RequestCredentials,
     headers,
-    body: data,
+    body: data as BodyInit,
   }
 }
 

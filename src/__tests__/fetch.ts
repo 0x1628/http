@@ -137,3 +137,21 @@ test('test post body in browser', () => {
   delete (global as any).FormData
   delete (global as any).File
 })
+
+test('test body not parse', () => {
+  mockedFetch.mockResolvedValue({
+    ...baseResponse,
+  })
+  http.post('/test', new Uint8Array([21,31]), {
+    headers: {
+      'content-type': 'application/protobuf',
+    },
+  })
+
+  function getPostArg() {
+    return mockedFetch.mock.calls[mockedFetch.mock.calls.length - 1][1]
+  }
+
+  expect(getPostArg().body).toBeInstanceOf(Uint8Array)
+  expect(getPostArg().headers['content-type']).toBe('application/protobuf')
+})
