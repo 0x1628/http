@@ -25,6 +25,10 @@ export class Http {
     config = {
       ...this.defaults,
       ...config,
+      headers: {
+        ...this.defaults.headers,
+        ...config.headers,
+      },
     }
 
     const transformedConfig = this.defaults.transformRequest!.reduce((conf, next) => {

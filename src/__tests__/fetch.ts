@@ -142,7 +142,7 @@ test('test body not parse', () => {
   mockedFetch.mockResolvedValue({
     ...baseResponse,
   })
-  http.post('/test', new Uint8Array([21,31]), {
+  http.post('/test', new Uint8Array([21, 31]), {
     headers: {
       'content-type': 'application/protobuf',
     },

@@ -61,3 +61,24 @@ test('test errorhandler', async () => {
     expect(e.status).toBe(404)
   }
 })
+
+test('test multiple headers', () => {
+  const http = create({
+    headers: {token: 'lalalala'},
+  })
+  mockedFetch.mockResolvedValue({
+    ...baseResponse,
+  })
+  http.post('/test', undefined, {
+    headers: {
+      'content-type': 'application/protobuf',
+    },
+  })
+
+  function getPostArg() {
+    return mockedFetch.mock.calls[mockedFetch.mock.calls.length - 1][1]
+  }
+
+  expect(getPostArg().headers['content-type']).toBe('application/protobuf')
+  expect(getPostArg().headers.token).toBe('lalalala')
+})
